@@ -39,12 +39,17 @@ pipeline {
 			}
 		}
 
-//		stage('Deploy') {
-//			steps {
-//				sshagent(['jenkins-k8s-ssh-key']) {
-//					sh 'scp /Users/basgha300/home/aws/listDProcessesNativeStacks.sh ubuntu@ip-172-31-69-105.ec2.internal:/home/ubuntu'
-//				}
-//			}
-//		}
+		stage('Deploy') {
+			steps {
+				sshagent(['jenkins-k8s-ssh-key']) {
+					sh '''
+						ssh -T basgha300@18.207.214.231 <<< 'EOF'
+						kubectl set image deploymnet/cw2-server cw2-server=basgha300/cw2-server:latest
+						kubectl rollout status deployment/cw2-server
+						curl $(minikube service cw2-server-service --url)
+					'''
+				}
+			}
+		}
 	}
 }
