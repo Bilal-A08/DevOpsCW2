@@ -43,8 +43,8 @@ pipeline {
 			steps {
 				sshagent(['jenkins-k8s-ssh-key']) {
 					sh '''
-						ssh -T basgha300@18.207.214.231 <<< 'EOF'
-						kubectl set image deploymnet/cw2-server cw2-server=basgha300/cw2-server:latest
+						ssh -T basgha300@18.207.214.231 << 'EOF'
+						kubectl set image deployment/cw2-server cw2-server=basgha300/cw2-server:latest
 						kubectl rollout status deployment/cw2-server
 						curl $(minikube service cw2-server-service --url)
 					'''
